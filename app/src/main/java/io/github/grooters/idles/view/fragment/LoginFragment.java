@@ -32,7 +32,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
     private ImageView rememberImage, showHideImage, clearImage;
 
-    private boolean isRememberAccount, isShowPassword;
+    private boolean isShowPassword;
 
     private LoadingWidget loadingText;
 
@@ -82,7 +82,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
         visitorText.setOnClickListener(this);
 
-        iLoginP.getAccountInfo(Objects.requireNonNull(getActivity()).getApplicationContext());
+        iLoginP.judgeAccount(Objects.requireNonNull(getActivity()).getApplicationContext());
     }
 
     @Override
@@ -121,10 +121,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
             case R.id.img_remember:
 
-                isRememberAccount = !isRememberAccount;
-
                 iLoginP.rememberAccount(Objects.requireNonNull(getActivity()).getApplicationContext(),
-                        isRememberAccount, accountEdit.getText().toString(), passWordEdit.getText().toString());
+                        iLoginP.getIsRemember(), accountEdit.getText().toString(), passWordEdit.getText().toString());
 
                 break;
 
@@ -146,7 +144,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
             case R.id.text_register:
 
-                iLoginP.registerAccount();
+                Intenter.jumpActivity(getActivity(), AccountFragment.class);
 
                 break;
 

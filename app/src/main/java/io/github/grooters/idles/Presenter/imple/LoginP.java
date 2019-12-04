@@ -13,12 +13,16 @@ import io.github.grooters.idles.net.ResponseCode;
 import io.github.grooters.idles.utils.Encrypter;
 import io.github.grooters.idles.utils.FileIOer;
 import io.github.grooters.idles.utils.Jsoner;
+import io.github.grooters.idles.view.fragment.AccountFragment;
 import io.github.grooters.idles.view.fragment.LoginFragment;
+import io.github.grooters.idles.view.fragment.inter.IAccountFragment;
 import io.github.grooters.idles.view.fragment.inter.ILoginFragment;
 
 public class LoginP implements ILoginP {
 
     private ILoginFragment iLoginFragment;
+
+    private IAccountFragment iAccountFragment;
 
     private ILoginM iLoginM;
 
@@ -36,12 +40,20 @@ public class LoginP implements ILoginP {
 
     }
 
+    public LoginP(AccountFragment accountFragment){
+
+        iAccountFragment = accountFragment;
+
+        iLoginM = new LoginM(iLoginFragment, this);
+
+    }
+
     @Override
     public void login(final Context context, String number, String password) {
 
         iLoginFragment.startLading();
 
-        iLoginM.login(number, password, new ModelCallBack() {
+        iLoginM.getUserNoToken(number, password, new ModelCallBack() {
             @Override
             public void success(Object data) {
 
@@ -52,12 +64,15 @@ public class LoginP implements ILoginP {
                 switch (token){
                     case ResponseCode.PASS_ERROR:
                         iLoginFragment.loginFailure("账号或密码错误");
+                        iLoginFragment.stopLading();
                         return;
                     case ResponseCode.ACCOUNT_NON:
                         iLoginFragment.loginFailure("账户不存在");
+                        iLoginFragment.stopLading();
                         return;
                     case ResponseCode.UNKNOWN:
                         iLoginFragment.loginFailure("未知错误，请稍后再试");
+                        iLoginFragment.stopLading();
                         return;
                 }
 
@@ -89,13 +104,13 @@ public class LoginP implements ILoginP {
     public void loginAsVisitor(Context context) {
 
         // 拿到临时访问令牌
-        iLoginM.loginAsVisitor(new ModelCallBack() {
+        iLoginM.getToken(new ModelCallBack() {
             @Override
             public void success(Object data) {
 
-                User user = (User)data;
+                String token = (String)data;
 
-                if( user.getToken() != null ){
+                if( token != null ){
 
                     iLoginFragment.loginSuccessAsVisitor();
 
@@ -120,19 +135,21 @@ public class LoginP implements ILoginP {
 
     // 应用运行时获取账户信息，若存在账户信息，则填充视图账号和密码编辑框
     @Override
-    public void getAccountInfo(Context context) {
+    public void judgeAccount(Context context) {
 
         String json = FileIOer.readString(context, ACCOUNT_INFO);
 
-        Logger.d(json);
+        User user = Jsoner.toObj(Encrypter.fromBase64(json), User.class);
 
-        if(json != null){
+        if (user == null)
 
-            User user = Jsoner.toObj(Encrypter.fromBase64(json), User.class);
+            return;
 
-            iLoginFragment.initAccount(user.getNumber(), user.getPassword());
+        isRememberAccount = true;
 
-        }
+        iLoginFragment.rememberAccount();
+
+        iLoginFragment.initAccount(user.getNumber(), user.getPassword());
 
     }
 
@@ -156,21 +173,28 @@ public class LoginP implements ILoginP {
     @Override
     public void rememberAccount(Context context, boolean b, String number, String password) {
 
-        if(b){
+        if(!b){
 
             Logger.d(ACCOUNT_INFO);
-
 
             iLoginFragment.rememberAccount();
 
         }else{
 
-
             iLoginFragment.forgetAccount();
+
+            FileIOer.delete(context, ACCOUNT_INFO);
 
         }
 
-        isRememberAccount = b;
+        isRememberAccount = !b;
+    }
+
+    @Override
+    public boolean getIsRemember() {
+
+        return isRememberAccount;
+
     }
 
     // 提供编辑框内容监听器对象给视图
@@ -183,11 +207,6 @@ public class LoginP implements ILoginP {
 
     @Override
     public void findPassword() {
-
-    }
-
-    @Override
-    public void registerAccount() {
 
     }
 
@@ -213,6 +232,17 @@ public class LoginP implements ILoginP {
 
         @Override
         public void afterTextChanged(Editable s) { }
+    }
+
+    // 注册手机账号
+    @Override
+    public void getVerification(String phoneNumber) {
+
+    }
+
+    @Override
+    public void verify(String code) {
+
     }
 
 }

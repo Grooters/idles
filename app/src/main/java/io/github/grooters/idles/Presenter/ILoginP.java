@@ -6,20 +6,24 @@ import android.text.TextWatcher;
 
 public interface ILoginP {
 
-    public void showPassword(boolean b);
+    void showPassword(boolean b);
 
-    public void rememberAccount(Context context, boolean b, String number, String password);
+    void rememberAccount(Context context, boolean b, String number, String password);
 
-    public TextWatcher getTextWatcher();
+    TextWatcher getTextWatcher();
 
-    public void findPassword();
+    void findPassword();
 
-    public void registerAccount();
+    void login(Context context, String number, String password);
 
-    public void login(Context context, String number, String password);
+    void loginAsVisitor(Context context);
 
-    public void loginAsVisitor(Context context);
+    void judgeAccount(Context context);
 
-    public void getAccountInfo(Context context);
+    boolean getIsRemember();
+
+    void getVerification(String phoneNumber);
+
+    void verify(String code);
 
 }

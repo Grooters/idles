@@ -9,6 +9,7 @@ import	java.io.FileWriter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class FileIOer {
 
@@ -21,6 +22,7 @@ public class FileIOer {
         try {
 
             FileWriter writer = new FileWriter(file);
+
             writer.write(message);
 
             writer.close();
@@ -35,7 +37,7 @@ public class FileIOer {
 
         File file = new File(context.getFilesDir().getPath() + "/" +fileName);
 
-        String message = null;
+        StringBuilder message = new StringBuilder();
 
         try {
 
@@ -43,7 +45,13 @@ public class FileIOer {
 
             BufferedReader bufferedReader = new BufferedReader(reader);
 
-            message = bufferedReader.readLine();
+            String temp;
+
+            while ((temp = bufferedReader.readLine()) != null){
+
+                message.append(temp);
+
+            }
 
             reader.close();
 
@@ -51,7 +59,23 @@ public class FileIOer {
             e.printStackTrace();
         }
 
-        return message;
+        Logger.d(message.toString());
+
+        return message.toString();
+
+    }
+
+    public static boolean delete(Context context, String fileName){
+
+        File file = new File(context.getFilesDir().getPath() + "/" +fileName);
+
+        if(file.exists())
+
+            return file.delete();
+
+        else
+
+            return false;
 
     }
 

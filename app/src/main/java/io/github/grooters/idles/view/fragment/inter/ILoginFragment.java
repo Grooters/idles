@@ -4,26 +4,26 @@ import io.github.grooters.idles.base.IBaseView;
 
 public interface ILoginFragment extends IBaseView {
 
-    public void showPassword();
+    void showPassword();
 
-    public void hidePassword();
+    void hidePassword();
 
-    public void rememberAccount();
+    void rememberAccount();
 
-    public void forgetAccount();
+    void forgetAccount();
 
-    public void showClearButton();
+    void showClearButton();
 
-    public void hideClearButton();
+    void hideClearButton();
 
-    public void loginFailure(String message);
+    void loginFailure(String message);
 
-    public void loginSuccess();
+    void loginSuccess();
 
-    public void loginFailureAsVisitor();
+    void loginFailureAsVisitor();
 
-    public void loginSuccessAsVisitor();
+    void loginSuccessAsVisitor();
 
-    public void initAccount(String number, String password);
+    void initAccount(String number, String password);
 
 }

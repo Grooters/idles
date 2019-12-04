@@ -9,7 +9,6 @@ import io.github.grooters.idles.net.ModelCallBack;
 import io.github.grooters.idles.net.Retrofiter;
 import io.github.grooters.idles.net.api.LoginApi;
 import io.github.grooters.idles.net.ServerAddress;
-import io.github.grooters.idles.utils.SimpleObserver;
 import io.github.grooters.idles.view.fragment.inter.ILoginFragment;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
@@ -35,7 +34,7 @@ public class LoginM implements ILoginM {
     }
 
     @Override
-    public void login(String number, String password, final ModelCallBack callBack) {
+    public void getUserNoToken(String number, String password, final ModelCallBack callBack) {
 
         Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).login(number, password)
                 .subscribeOn(Schedulers.io())
@@ -75,35 +74,7 @@ public class LoginM implements ILoginM {
     }
 
     @Override
-    public void getUser(String token, final ModelCallBack callBack) {
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUser(token)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext(new Consumer<User>() {
-                @Override
-                public void accept(User user) {
-                    callBack.success(user);
-                }
-            })
-            .subscribe(new Observer<User>() {
-                @Override
-                public void onSubscribe(Disposable d) {
-                    disposable = d;
-                }
-                @Override
-                public void onNext(User user) { }
-                @Override
-                public void onError(Throwable e) {
-                    callBack.failure(e.getMessage());
-                }
-                @Override
-                public void onComplete() { }
-            });
-
-    }
-
-    @Override
-    public void loginAsVisitor(final ModelCallBack callBack) {
+    public void getToken(final ModelCallBack callBack) {
 
         Logger.d("loginAsVisitor");
         Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getVisitor()
@@ -139,36 +110,40 @@ public class LoginM implements ILoginM {
     }
 
     @Override
-    public void getCode(String email, final ModelCallBack callBack) {
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getCode(email)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<ResponseBody>() {
-                    @Override
-                    public void accept(ResponseBody body) throws IOException {
-                        String code = body.string();
-                        Logger.d("code:" + code);
-                        callBack.success(code);
-                    }
-                }).subscribe(new SimpleObserver<ResponseBody>() {
-                    @Override
-                    public void handle(ResponseBody response) { }
-        });
+    public void getVerification(String phoneNumber) {
+
     }
 
     @Override
-    public void register(String email, String password, String code, final ModelCallBack callBack) {
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).register(email, password, code)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<User>() {
-                    @Override
-                    public void accept(User user) {
-                        callBack.success(user);
-                    }
-                }).subscribe(new SimpleObserver<User>() {
-                    @Override
-                    public void handle(User user) { }
-                });
+    public void getUser(String token, final ModelCallBack callBack) {
+        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUser(token)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext(new Consumer<User>() {
+                @Override
+                public void accept(User user) {
+                    callBack.success(user);
+                }
+            })
+            .subscribe(new Observer<User>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+                    disposable = d;
+                }
+                @Override
+                public void onNext(User user) { }
+                @Override
+                public void onError(Throwable e) {
+                    callBack.failure(e.getMessage());
+                }
+                @Override
+                public void onComplete() { }
+            });
+
+    }
+
+    @Override
+    public void setUser(String phoneNumber, String password) {
+
     }
 }

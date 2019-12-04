@@ -105,7 +105,7 @@
         android:textSize="15sp"/>
 
     <Button
-        android:id="@+id/butt_login"
+        android:id="@+id/butt_register"
         android:layout_width="0dp"
         android:layout_height="50dp"
         app:layout_constraintStart_toStartOf="@id/edit_phone"

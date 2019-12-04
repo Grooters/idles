@@ -1,5 +1,7 @@
 package io.github.grooters.idles.bean;
 
+import com.google.gson.Gson;
+
 /**
  * Create by 李林浪 in 2019/6/12
  * Elegant Code...
@@ -20,6 +22,16 @@ public class User{
         this.password = password;
         this.token = token;
     }
+
+//    public static void main(String...args){
+//
+//        Gson gson = new Gson();
+//
+//        User user = new User("1","2","1","2","1","2","1","2","1");
+//
+//        System.out.println(gson.toJson(user));
+//
+//    }
 
     public String getToken() {
         return token;

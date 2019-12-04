@@ -5,8 +5,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import io.github.grooters.idles.R;
 import io.github.grooters.idles.base.BaseFragment;
+import io.github.grooters.idles.utils.Toaster;
+import io.github.grooters.idles.view.fragment.inter.IAccountFragment;
 
-public class AccountFragment extends BaseFragment implements View.OnClickListener {
+public class AccountFragment extends BaseFragment implements View.OnClickListener, IAccountFragment {
+
+    private EditText passwordEdit, passwordSecondEdit;
 
     @Override
     public int getLayout() {
@@ -20,9 +24,9 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
         EditText verificationEdit = view.findViewById(R.id.edit_verification);
 
-        EditText passwordEdit = view.findViewById(R.id.edit_password);
+        passwordEdit = view.findViewById(R.id.edit_password);
 
-        EditText passwordSecondEdit = view.findViewById(R.id.edit_password_second);
+        passwordSecondEdit = view.findViewById(R.id.edit_password_second);
 
         TextView verificationTextView = view.findViewById(R.id.text_verification);
 
@@ -47,15 +51,31 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
         switch (v.getId()){
 
-            case R.id.edit_phone:
+            case R.id.text_verify:
 
-                break;
+            case R.id.text_verification:
 
-            case R.id.edit_verification:
-
-                break;
+            case R.id.text_register:
 
         }
+
+    }
+
+    @Override
+    public void setPasswordEditVisible() {
+
+        Toaster.shortShow(getActivity(),"验证成功");
+
+        passwordEdit.setVisibility(View.VISIBLE);
+
+        passwordSecondEdit.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void showVerificationError() {
+
+        Toaster.shortShow(getActivity(),"验证失败");
 
     }
 }

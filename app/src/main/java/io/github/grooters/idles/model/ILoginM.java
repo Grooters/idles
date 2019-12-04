@@ -4,14 +4,14 @@ import io.github.grooters.idles.net.ModelCallBack;
 
 public interface ILoginM {
 
-    public void login(String number, String password, ModelCallBack callBack);
+    void getUserNoToken(String number, String password, ModelCallBack callBack);
 
-    public void getUser(String token, ModelCallBack callBack);
+    void getUser(String token, ModelCallBack callBack);
 
-    public void loginAsVisitor(ModelCallBack callBack);
+    void getToken(ModelCallBack callBack);
 
-    public void getCode(String email, ModelCallBack callBack);
+    void getVerification(String phoneNumber);
 
-    public void register(String email, String password, String code, ModelCallBack callBack);
+    void setUser(String phoneNumber, String password);
 
 }

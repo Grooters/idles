@@ -2,10 +2,8 @@ package io.github.grooters.idles.view.activity;
 
 import android.os.Bundle;
 import android.util.Log;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import io.github.grooters.idles.R;
 import io.github.grooters.idles.base.BaseActivity;
 import io.github.grooters.idles.view.fragment.MainFragment;
