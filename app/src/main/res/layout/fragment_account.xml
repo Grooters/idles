@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/img_account"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toTopOf="@id/edit_phone"
+        app:layout_constraintStart_toStartOf="@id/edit_phone"
+        app:layout_constraintEnd_toEndOf="@id/edit_phone"
+        android:layout_marginBottom="40dp"
+        android:src="@drawable/ic_idles"/>
+
+    <EditText
+        android:id="@+id/edit_phone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="320dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:hint="@string/edit_phone"
+        android:maxLines="1"
+        android:textSize="15sp"/>
+
+    <EditText
+        android:id="@+id/edit_verification"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="@id/edit_phone"
+        app:layout_constraintEnd_toEndOf="@id/edit_phone"
+        app:layout_constraintTop_toBottomOf="@id/edit_phone"
+        android:layout_marginTop="25dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:hint="@string/edit_verification"
+        android:maxLines="1"
+        android:inputType="textPassword"
+        android:textSize="15sp"/>
+
+
+    <TextView
+        android:id="@+id/text_verification"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@id/edit_verification"
+        app:layout_constraintBottom_toBottomOf="@id/edit_phone"
+        android:layout_marginBottom="15dp"
+        android:text="@string/text_verification"
+        android:textColor="@color/text_password_forget"/>
+
+    <TextView
+        android:id="@+id/text_verify"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@id/edit_verification"
+        app:layout_constraintBottom_toBottomOf="@id/edit_verification"
+        android:layout_marginBottom="15dp"
+        android:text="@string/text_verify"
+        android:textColor="@color/text_password_forget"/>
+
+
+    <EditText
+        android:id="@+id/edit_password"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="@id/edit_phone"
+        app:layout_constraintEnd_toEndOf="@id/edit_phone"
+        app:layout_constraintTop_toBottomOf="@id/edit_verification"
+        android:layout_marginTop="25dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:visibility="visible"
+        android:hint="@string/edit_password"
+        android:maxLines="1"
+        android:inputType="textPassword"
+        android:textSize="15sp"/>
+
+
+    <EditText
+        android:id="@+id/edit_password_second"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="@id/edit_phone"
+        app:layout_constraintEnd_toEndOf="@id/edit_phone"
+        app:layout_constraintTop_toBottomOf="@id/edit_password"
+        android:layout_marginTop="25dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:visibility="visible"
+        android:hint="@string/edit_password_second"
+        android:maxLines="1"
+        android:inputType="textPassword"
+        android:textSize="15sp"/>
+
+    <Button
+        android:id="@+id/butt_login"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="@id/edit_phone"
+        app:layout_constraintEnd_toEndOf="@id/edit_phone"
+        app:layout_constraintTop_toBottomOf="@id/edit_password_second"
+        android:layout_marginTop="25dp"
+        android:visibility="visible"
+        android:background="@drawable/butt_login"
+        android:text="@string/text_register"
+        android:textColor="@android:color/white"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

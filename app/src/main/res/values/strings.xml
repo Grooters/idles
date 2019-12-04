@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">idles</string>
+    <string name="butt_login">登录</string>
+    <string name="edit_account">请输入账号</string>
+    <string name="edit_password">请输入密码</string>
+    <string name="edit_password_second">请再次输入密码</string>
+    <string name="text_forget">忘记密码</string>
+    <string name="text_visitor">以游客方式登录</string>
+    <string name="text_school">用教务系统账户登录</string>
+    <string name="text_register">注册</string>
+    <string name="edit_phone">请输入手机号</string>
+    <string name="edit_verification">请输入验证码</string>
+    <string name="text_verification">获取验证码</string>
+    <string name="text_verify">验证</string>
+</resources>

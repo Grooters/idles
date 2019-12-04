@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#000000</color>
+    <color name="mainTheme">#FFD84D</color>
+    <color name="butt_login">#212121</color>
+    <color name="butt_login_press">#000000</color>
+    <color name="edit_account_password">#0F0F0F</color>
+    <color name="edit_account_password_press">#000000</color>
+    <color name="text_password_forget">#090909</color>
+    <color name="text_visitor_register">#090909</color>
+</resources>
