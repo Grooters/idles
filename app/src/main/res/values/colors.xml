@@ -10,4 +10,5 @@
     <color name="edit_account_password_press">#000000</color>
     <color name="text_password_forget">#090909</color>
     <color name="text_visitor_register">#090909</color>
+    <color name="text_back_login">#3C3C3C</color>
 </resources>

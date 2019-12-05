@@ -3,14 +3,20 @@ package io.github.grooters.idles.view.fragment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import java.util.Objects;
+import io.github.grooters.idles.Presenter.ILoginP;
+import io.github.grooters.idles.Presenter.imple.LoginP;
 import io.github.grooters.idles.R;
 import io.github.grooters.idles.base.BaseFragment;
 import io.github.grooters.idles.utils.Toaster;
+import io.github.grooters.idles.view.activity.LoginActivity;
 import io.github.grooters.idles.view.fragment.inter.IAccountFragment;
 
 public class AccountFragment extends BaseFragment implements View.OnClickListener, IAccountFragment {
 
-    private EditText passwordEdit, passwordSecondEdit;
+    private EditText passwordEdit, passwordSecondEdit, phoneEdit, verificationEdit;
+
+    private ILoginP iLoginP;
 
     @Override
     public int getLayout() {
@@ -20,9 +26,9 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void initView(View view) {
 
-        EditText phoneEdit = view.findViewById(R.id.edit_phone);
+        phoneEdit = view.findViewById(R.id.edit_phone);
 
-        EditText verificationEdit = view.findViewById(R.id.edit_verification);
+        verificationEdit = view.findViewById(R.id.edit_verification);
 
         passwordEdit = view.findViewById(R.id.edit_password);
 
@@ -31,6 +37,8 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         TextView verificationTextView = view.findViewById(R.id.text_verification);
 
         TextView verifyTextView = view.findViewById(R.id.text_verify);
+
+        TextView backLoginTextView = view.findViewById(R.id.text_back_login);
 
         phoneEdit.setOnClickListener(this);
 
@@ -44,6 +52,10 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
         verificationTextView.setOnClickListener(this);
 
+        backLoginTextView.setOnClickListener(this);
+
+        iLoginP = new LoginP(this);
+
     }
 
     @Override
@@ -53,9 +65,26 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
             case R.id.text_verify:
 
+                iLoginP.verify(verificationEdit.getText().toString());
+
+                break;
+
             case R.id.text_verification:
 
+                iLoginP.getVerification(phoneEdit.getText().toString());
+
+                break;
+
             case R.id.text_register:
+
+                break;
+
+            case R.id.text_back_login:
+
+                ((LoginActivity) Objects.requireNonNull(getActivity()))
+                        .replaceFragment( new LoginFragment(), "LoginFragment");
+
+                break;
 
         }
 
@@ -78,4 +107,15 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         Toaster.shortShow(getActivity(),"验证失败");
 
     }
+
+    @Override
+    public void startLading() {
+
+    }
+
+    @Override
+    public void stopLading() {
+
+    }
+
 }

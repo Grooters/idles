@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+
 import com.orhanobut.logger.Logger;
 import java.util.Objects;
 import io.github.grooters.idles.Presenter.ILoginP;
@@ -15,6 +17,7 @@ import io.github.grooters.idles.R;
 import io.github.grooters.idles.base.BaseFragment;
 import io.github.grooters.idles.utils.Intenter;
 import io.github.grooters.idles.utils.Toaster;
+import io.github.grooters.idles.view.activity.LoginActivity;
 import io.github.grooters.idles.view.activity.MainActivity;
 import io.github.grooters.idles.view.fragment.inter.ILoginFragment;
 import io.github.grooters.idles.view.widget.LoadingWidget;
@@ -144,7 +147,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
             case R.id.text_register:
 
-                Intenter.jumpActivity(getActivity(), AccountFragment.class);
+                ((LoginActivity) Objects.requireNonNull(getActivity()))
+                        .replaceFragment( new AccountFragment(), "AccountFragment");
 
                 break;
 
@@ -256,4 +260,5 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
         clearImage.setVisibility(View.GONE);
 
     }
+
 }

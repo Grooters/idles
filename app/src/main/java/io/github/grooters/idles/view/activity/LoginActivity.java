@@ -1,10 +1,10 @@
 package io.github.grooters.idles.view.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import androidx.fragment.app.Fragment;
 import io.github.grooters.idles.R;
 import io.github.grooters.idles.base.BaseActivity;
+import io.github.grooters.idles.base.BaseFragment;
 import io.github.grooters.idles.view.fragment.LoginFragment;
 
 /**
@@ -15,7 +15,6 @@ public class LoginActivity extends BaseActivity {
 
     private static final String TAG = "LoginActivity";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -24,14 +23,19 @@ public class LoginActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
 
-        Log.d(TAG, "onCreate: sendEmptyMessage_later");
-
     }
 
     @Override
     public Fragment createFragment() {
 
         return new LoginFragment();
+
+    }
+
+    @Override
+    public void replaceFragment(BaseFragment fragment, String name) {
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.login_frame_fragment_container, fragment, name).commit();
 
     }
 
@@ -49,10 +53,4 @@ public class LoginActivity extends BaseActivity {
         return R.layout.activity_login;
     }
 
-    @Override
-    protected void onDestroy() {
-
-        super.onDestroy();
-
-    }
 }

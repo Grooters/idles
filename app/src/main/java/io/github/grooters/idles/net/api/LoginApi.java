@@ -3,24 +3,30 @@ package io.github.grooters.idles.net.api;
 import io.github.grooters.idles.bean.User;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Query;
+import retrofit2.http.POST;
 
 public interface LoginApi {
 
-    @GET("login")
-    Observable<ResponseBody> login(@Query("number") String number, @Query("password")String password);
+    @FormUrlEncoded
+    @POST("getToken")
+    Observable<ResponseBody> getToken(@Field("number") String number, @Field("password") String password);
 
-    @GET("getUser")
-    Observable<User> getUser(@Query("token") String token);
+    @FormUrlEncoded
+    @POST("getUser")
+    Observable<User> getUser(@Field("token") String token);
 
-    @GET("loginAsVisitor")
-    Observable<ResponseBody> getVisitor();
+    @GET("getTokenByVisitor")
+    Observable<ResponseBody> getTokenByVisitor();
 
-    @GET("register")
-    Observable<ResponseBody> getCode(@Query("email") String email);
+    @FormUrlEncoded
+    @POST("getVerification")
+    Observable<ResponseBody> getVerification(@Field("phoneNumber") String phoneNumber);
 
-    @GET("register")
-    Observable<User> register(@Query("email") String email, @Query("password")String password, @Query("code") String code);
+    @FormUrlEncoded
+    @POST("register")
+    Observable<User> register(@Field("phoneNumber") String phoneNumber, @Field("password") String password);
 
 }

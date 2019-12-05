@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="@id/edit_phone"
         app:layout_constraintEnd_toEndOf="@id/edit_phone"
         android:layout_marginBottom="40dp"
-        android:src="@drawable/ic_idles"/>
+        android:src="@drawable/ic_hand_big"/>
 
     <EditText
         android:id="@+id/edit_phone"
@@ -78,7 +78,7 @@
         app:layout_constraintStart_toStartOf="@id/edit_phone"
         app:layout_constraintEnd_toEndOf="@id/edit_phone"
         app:layout_constraintTop_toBottomOf="@id/edit_verification"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:visibility="visible"
@@ -104,6 +104,18 @@
         android:inputType="textPassword"
         android:textSize="15sp"/>
 
+    <TextView
+        android:id="@+id/text_back_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/edit_phone"
+        app:layout_constraintTop_toBottomOf="@id/edit_verification"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/text_back_login"
+        android:textSize="12sp"
+        android:text="@string/text_back_login"/>
+
     <Button
         android:id="@+id/butt_register"
         android:layout_width="0dp"
@@ -111,7 +123,7 @@
         app:layout_constraintStart_toStartOf="@id/edit_phone"
         app:layout_constraintEnd_toEndOf="@id/edit_phone"
         app:layout_constraintTop_toBottomOf="@id/edit_password_second"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="35dp"
         android:visibility="visible"
         android:background="@drawable/butt_login"
         android:text="@string/text_register"

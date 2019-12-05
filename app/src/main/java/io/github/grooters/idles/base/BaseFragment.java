@@ -9,6 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
+import io.github.grooters.idles.view.activity.LoginActivity;
+
 /**
  * Create by 李林浪 in 2019/6/12
  * Elegant Code...
@@ -26,7 +30,6 @@ public abstract class BaseFragment extends Fragment {
         View layout = inflater.inflate(getLayout(),null);
 
         initView(layout);
-
 
         return layout;
 

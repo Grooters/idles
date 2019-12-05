@@ -10,8 +10,8 @@ public interface ILoginM {
 
     void getToken(ModelCallBack callBack);
 
-    void getVerification(String phoneNumber);
+    void getVerification(String phoneNumber, ModelCallBack callBack);
 
-    void setUser(String phoneNumber, String password);
+    void setUser(String phoneNumber, String password, ModelCallBack callBack);
 
 }

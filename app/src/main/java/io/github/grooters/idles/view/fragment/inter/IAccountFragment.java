@@ -1,6 +1,8 @@
 package io.github.grooters.idles.view.fragment.inter;
 
-public interface IAccountFragment {
+import io.github.grooters.idles.base.IBaseView;
+
+public interface IAccountFragment extends IBaseView {
 
     void setPasswordEditVisible();
 

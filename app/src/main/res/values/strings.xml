@@ -12,4 +12,5 @@
     <string name="edit_verification">请输入验证码</string>
     <string name="text_verification">获取验证码</string>
     <string name="text_verify">验证</string>
+    <string name="text_back_login">已经拥有账号？</string>
 </resources>

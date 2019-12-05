@@ -1,6 +1,6 @@
 package io.github.grooters.idles.model.imple;
-import	java.io.IOException;
 
+import	java.io.IOException;
 import com.orhanobut.logger.Logger;
 import io.github.grooters.idles.Presenter.ILoginP;
 import io.github.grooters.idles.bean.User;
@@ -36,7 +36,7 @@ public class LoginM implements ILoginM {
     @Override
     public void getUserNoToken(String number, String password, final ModelCallBack callBack) {
 
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).login(number, password)
+        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getToken(number, password)
                 .subscribeOn(Schedulers.io())
                 // 这里要用io线程来实现第二个接口的请求访问
                 .observeOn(Schedulers.io())
@@ -77,7 +77,7 @@ public class LoginM implements ILoginM {
     public void getToken(final ModelCallBack callBack) {
 
         Logger.d("loginAsVisitor");
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getVisitor()
+        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getTokenByVisitor()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Consumer<ResponseBody>() {
@@ -110,12 +110,37 @@ public class LoginM implements ILoginM {
     }
 
     @Override
-    public void getVerification(String phoneNumber) {
+    public void getVerification(String phoneNumber, final ModelCallBack callBack) {
+
+        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getVerification(phoneNumber)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<ResponseBody>() {
+                    @Override
+                    public void accept(ResponseBody body) throws IOException {
+                        callBack.success(body.string());
+                    }
+                })
+                .subscribe(new Observer<ResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
+                    @Override
+                    public void onNext(ResponseBody body) { }
+                    @Override
+                    public void onError(Throwable e) {
+                        callBack.failure(e.getMessage());
+                    }
+                    @Override
+                    public void onComplete() { }
+                });
 
     }
 
     @Override
     public void getUser(String token, final ModelCallBack callBack) {
+
         Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUser(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -143,7 +168,30 @@ public class LoginM implements ILoginM {
     }
 
     @Override
-    public void setUser(String phoneNumber, String password) {
+    public void setUser(String phoneNumber, String password, final ModelCallBack callBack) {
 
+        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).register(phoneNumber, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<User>() {
+                    @Override
+                    public void accept(User user) {
+                        callBack.success(user);
+                    }
+                })
+                .subscribe(new Observer<User>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
+                    @Override
+                    public void onNext(User user) { }
+                    @Override
+                    public void onError(Throwable e) {
+                        callBack.failure(e.getMessage());
+                    }
+                    @Override
+                    public void onComplete() { }
+                });
     }
 }

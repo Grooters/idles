@@ -24,6 +24,8 @@ public class LoginP implements ILoginP {
 
     private IAccountFragment iAccountFragment;
 
+    private String verification;
+
     private ILoginM iLoginM;
 
     private final String ACCOUNT_INFO = Encrypter.md5("accountInfo");
@@ -238,10 +240,36 @@ public class LoginP implements ILoginP {
     @Override
     public void getVerification(String phoneNumber) {
 
+        iLoginM.getVerification(phoneNumber, new ModelCallBack() {
+            @Override
+            public void success(Object data) {
+
+                verification = (String)data;
+
+            }
+
+            @Override
+            public void failure(String message) {
+
+                verification = null;
+
+            }
+        });
+
     }
 
     @Override
-    public void verify(String code) {
+    public void verify(String verification) {
+
+        if(this.verification.equals(verification)){
+
+            iAccountFragment.setPasswordEditVisible();
+
+        }else{
+
+            iAccountFragment.showVerificationError();
+
+        }
 
     }
 

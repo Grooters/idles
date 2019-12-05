@@ -60,6 +60,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract Fragment createFragment();
 
+    public abstract void replaceFragment(BaseFragment fragment, String name);
+
+
     public abstract Fragment delayJump();
 
 
