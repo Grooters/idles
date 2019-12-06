@@ -22,8 +22,6 @@ public class Jsoner {
 
         Gson gson = new Gson();
 
-        Logger.d(gson.toJson(obj));
-
         return  gson.toJson(obj);
 
     }

@@ -1,8 +1,10 @@
 package io.github.grooters.idles.net;
 
-public interface ModelCallBack {
+import io.github.grooters.idles.base.BaseBean;
 
-    public void success(Object data);
+public interface ModelCallBack<T> {
+
+    public void success(BaseBean<T> data);
 
     public void failure(String message);
 

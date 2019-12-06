@@ -5,7 +5,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import com.orhanobut.logger.Logger;
 import io.github.grooters.idles.Presenter.ILoginP;
+import io.github.grooters.idles.base.BaseBean;
+import io.github.grooters.idles.bean.Token;
 import io.github.grooters.idles.bean.User;
+import io.github.grooters.idles.bean.Verification;
 import io.github.grooters.idles.model.ILoginM;
 import io.github.grooters.idles.model.imple.LoginM;
 import io.github.grooters.idles.net.ModelCallBack;
@@ -24,11 +27,15 @@ public class LoginP implements ILoginP {
 
     private IAccountFragment iAccountFragment;
 
-    private String verification;
+    private Verification verification;
 
     private ILoginM iLoginM;
 
     private final String ACCOUNT_INFO = Encrypter.md5("accountInfo");
+
+    private final String ACCOUNT_USER = Encrypter.md5("accountUser");
+
+    private final String ACCOUNT_VISITOR = Encrypter.md5("accountVisitor");
 
     private boolean isRememberAccount;
 
@@ -55,15 +62,16 @@ public class LoginP implements ILoginP {
 
         iLoginFragment.startLading();
 
-        iLoginM.getUserNoToken(number, password, new ModelCallBack() {
+        iLoginM.getUserNoToken(number, password, new ModelCallBack<User>() {
+
             @Override
-            public void success(Object data) {
+            public void success(BaseBean<User> data) {
 
-                user = (User)data;
+                Logger.d(data.getData());
 
-                String token = user.getToken();
+                int code = data.getCode();
 
-                switch (token){
+                switch (code){
                     case ResponseCode.PASS_ERROR:
                         iLoginFragment.loginFailure("账号或密码错误");
                         iLoginFragment.stopLading();
@@ -78,11 +86,15 @@ public class LoginP implements ILoginP {
                         return;
                 }
 
+                user = data.getData();
+
                 if( isRememberAccount)
 
                     FileIOer.writeString(context, ACCOUNT_INFO, Encrypter.toBase64(Jsoner.toJson(user)));
 
                 iLoginFragment.stopLading();
+
+                FileIOer.writeString(context, ACCOUNT_USER, Encrypter.toBase64(Jsoner.toJson(user)));
 
                 iLoginFragment.loginSuccess();
 
@@ -99,22 +111,22 @@ public class LoginP implements ILoginP {
 
         });
 
-
     }
 
     @Override
-    public void loginAsVisitor(Context context) {
-
+    public void loginAsVisitor(final Context context) {
         // 拿到临时访问令牌
-        iLoginM.getToken(new ModelCallBack() {
+        iLoginM.getToken(new ModelCallBack<Token>() {
             @Override
-            public void success(Object data) {
+            public void success(BaseBean<Token> tokens) {
 
-                String token = (String)data;
+                String token = tokens.getData().getToken();
 
-                if( token != null ){
+                if( tokens.getCode() != ResponseCode.UNKNOWN ){
 
                     iLoginFragment.loginSuccessAsVisitor();
+
+                    FileIOer.writeString(context, ACCOUNT_VISITOR, Encrypter.toBase64(Jsoner.toJson(token)));
 
                 }else{
 
@@ -240,11 +252,11 @@ public class LoginP implements ILoginP {
     @Override
     public void getVerification(String phoneNumber) {
 
-        iLoginM.getVerification(phoneNumber, new ModelCallBack() {
+        iLoginM.getVerification(phoneNumber, new ModelCallBack<Verification>() {
             @Override
-            public void success(Object data) {
+            public void success(BaseBean<Verification> verifications) {
 
-                verification = (String)data;
+                verification = verifications.getData();
 
             }
 
@@ -259,9 +271,9 @@ public class LoginP implements ILoginP {
     }
 
     @Override
-    public void verify(String verification) {
+    public void verify(String str) {
 
-        if(this.verification.equals(verification)){
+        if(verification.getVerification().equals(str)){
 
             iAccountFragment.setPasswordEditVisible();
 

@@ -7,8 +7,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-
 import com.orhanobut.logger.Logger;
 import java.util.Objects;
 import io.github.grooters.idles.Presenter.ILoginP;

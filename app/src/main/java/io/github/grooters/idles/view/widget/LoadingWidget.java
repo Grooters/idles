@@ -14,13 +14,14 @@ import android.widget.TextView;
 public class LoadingWidget extends TextView{
 
     private SpannableString spanString;
+
     private RelativeSizeSpan sizeSpan;
+
+    private Runnable runable;
 
     private int index;
 
     private boolean b;
-
-    private Thread thread;
 
     public LoadingWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,7 +35,7 @@ public class LoadingWidget extends TextView{
 
     private void initAnimator(){
 
-        thread = new Thread(new Runnable() {
+        runable = new Runnable() {
             int time = 800;
             @Override
             public void run() {
@@ -59,14 +60,14 @@ public class LoadingWidget extends TextView{
                 }
 
             }
-        });
+        };
 
     }
 
     public void start(){
         b = true;
         setVisibility(VISIBLE);
-        thread.start();
+        new Thread(runable).start();
     }
 
     public void stop(){
