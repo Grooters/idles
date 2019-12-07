@@ -6,6 +6,7 @@ import io.github.grooters.idles.base.BaseBean;
 import io.github.grooters.idles.bean.Token;
 import io.github.grooters.idles.bean.User;
 import io.github.grooters.idles.bean.Verification;
+import io.github.grooters.idles.bean.data.GetUserData;
 import io.github.grooters.idles.model.ILoginM;
 import io.github.grooters.idles.net.ModelCallBack;
 import io.github.grooters.idles.net.Retrofiter;
@@ -34,32 +35,32 @@ public class LoginM implements ILoginM {
     }
 
     @Override
-    public void getUserNoToken(String number, String password, final ModelCallBack<User> callBack) {
+    public void getUserNoToken(String number, String password, final ModelCallBack<GetUserData> callBack) {
 
         Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getToken(number, password)
                 .subscribeOn(Schedulers.io())
                 // 这里要用io线程来实现第二个接口的请求访问
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<BaseBean<Token>, ObservableSource<BaseBean<User>>>() {
+                .flatMap(new Function<BaseBean<Token>, ObservableSource<BaseBean<GetUserData>>>() {
                     @Override
-                    public ObservableSource<BaseBean<User>> apply(BaseBean<Token> tokens) {
+                    public ObservableSource<BaseBean<GetUserData>> apply(BaseBean<Token> tokens) {
                         Logger.d(tokens.getData().getToken());
                         return Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUser(tokens.getData().getToken());
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<BaseBean<User>> (){
+                .doOnNext(new Consumer<BaseBean<GetUserData>> (){
                     @Override
-                    public void accept(BaseBean<User> users) {
+                    public void accept(BaseBean<GetUserData> users) {
                         Logger.d(users.getDesc());
                         callBack.success(users);
                     }
                 })
-                .subscribe(new Observer<BaseBean<User>>() {
+                .subscribe(new Observer<BaseBean<GetUserData>>() {
                     @Override
                     public void onSubscribe(Disposable d) { }
                     @Override
-                    public void onNext(BaseBean<User> user) { }
+                    public void onNext(BaseBean<GetUserData> user) { }
                     @Override
                     public void onError(Throwable e) {
                         Logger.d(e.getMessage());
@@ -126,22 +127,22 @@ public class LoginM implements ILoginM {
     }
 
     @Override
-    public void getUser(String token, final ModelCallBack<User> callBack) {
+    public void getUser(String token, final ModelCallBack<GetUserData> callBack) {
 
         Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUser(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext(new Consumer<BaseBean<User>>() {
+            .doOnNext(new Consumer<BaseBean<GetUserData>>() {
                 @Override
-                public void accept(BaseBean<User> user) {
+                public void accept(BaseBean<GetUserData> user) {
                     callBack.success(user);
                 }
             })
-            .subscribe(new Observer<BaseBean<User>>() {
+            .subscribe(new Observer<BaseBean<GetUserData>>() {
                 @Override
                 public void onSubscribe(Disposable d) { }
                 @Override
-                public void onNext(BaseBean<User> user) { }
+                public void onNext(BaseBean<GetUserData> user) { }
                 @Override
                 public void onError(Throwable e) {
                     callBack.failure(e.getMessage());

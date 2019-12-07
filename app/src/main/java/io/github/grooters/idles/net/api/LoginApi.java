@@ -4,6 +4,7 @@ import io.github.grooters.idles.base.BaseBean;
 import io.github.grooters.idles.bean.Token;
 import io.github.grooters.idles.bean.User;
 import io.github.grooters.idles.bean.Verification;
+import io.github.grooters.idles.bean.data.GetUserData;
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -18,7 +19,7 @@ public interface LoginApi {
 
     @FormUrlEncoded
     @POST("getUser")
-    Observable<BaseBean<User>> getUser(@Field("token") String token);
+    Observable<BaseBean<GetUserData>> getUser(@Field("token") String token);
 
     @GET("getTokenByVisitor")
     Observable<BaseBean<Token>> getTokenByVisitor();

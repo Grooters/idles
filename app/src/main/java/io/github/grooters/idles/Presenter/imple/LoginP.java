@@ -9,6 +9,7 @@ import io.github.grooters.idles.base.BaseBean;
 import io.github.grooters.idles.bean.Token;
 import io.github.grooters.idles.bean.User;
 import io.github.grooters.idles.bean.Verification;
+import io.github.grooters.idles.bean.data.GetUserData;
 import io.github.grooters.idles.model.ILoginM;
 import io.github.grooters.idles.model.imple.LoginM;
 import io.github.grooters.idles.net.ModelCallBack;
@@ -62,12 +63,12 @@ public class LoginP implements ILoginP {
 
         iLoginFragment.startLading();
 
-        iLoginM.getUserNoToken(number, password, new ModelCallBack<User>() {
+        iLoginM.getUserNoToken(number, password, new ModelCallBack<GetUserData>() {
 
             @Override
-            public void success(BaseBean<User> data) {
+            public void success(BaseBean<GetUserData> data) {
 
-                Logger.d(data.getData());
+                Logger.d(data.getData().getUser().getName());
 
                 int code = data.getCode();
 
@@ -86,7 +87,7 @@ public class LoginP implements ILoginP {
                         return;
                 }
 
-                user = data.getData();
+                user = data.getData().getUser();
 
                 if( isRememberAccount)
 
