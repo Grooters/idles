@@ -3,6 +3,9 @@ package io.github.grooters.idles.view.fragment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.orhanobut.logger.Logger;
+
 import java.util.Objects;
 import io.github.grooters.idles.Presenter.ILoginP;
 import io.github.grooters.idles.Presenter.imple.LoginP;
@@ -15,6 +18,8 @@ import io.github.grooters.idles.view.fragment.inter.IAccountFragment;
 public class AccountFragment extends BaseFragment implements View.OnClickListener, IAccountFragment {
 
     private EditText passwordEdit, passwordSecondEdit, phoneEdit, verificationEdit;
+
+    private TextView verificationTextView;
 
     private ILoginP iLoginP;
 
@@ -34,7 +39,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
         passwordSecondEdit = view.findViewById(R.id.edit_password_second);
 
-        TextView verificationTextView = view.findViewById(R.id.text_verification);
+        verificationTextView = view.findViewById(R.id.text_verification);
 
         TextView verifyTextView = view.findViewById(R.id.text_verify);
 
@@ -71,7 +76,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
             case R.id.text_verification:
 
-                iLoginP.getVerification(phoneEdit.getText().toString());
+                iLoginP.getVerification(getActivity(), phoneEdit.getText().toString());
 
                 break;
 
@@ -91,6 +96,31 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Override
+    public void showSuccess(String message) {
+
+        verificationTextView.setTextColor(getResources().getColor(R.color.text_verification_press,null));
+
+        Toaster.shortShow(getActivity(),message);
+
+    }
+
+    @Override
+    public void showFailure(String message) {
+
+        Toaster.shortShow(getActivity(),message);
+
+    }
+
+    @Override
+    public void initVerificationTextView() {
+
+        Logger.d("initVerificationTextView");
+
+        verificationTextView.setTextColor(getResources().getColor(R.color.text_verification,null));
+
+    }
+
+    @Override
     public void setPasswordEditVisible() {
 
         Toaster.shortShow(getActivity(),"验证成功");
@@ -102,9 +132,9 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Override
-    public void showVerificationError() {
+    public void showVerificationError(String message) {
 
-        Toaster.shortShow(getActivity(),"验证失败");
+        Toaster.shortShow(getActivity(),message);
 
     }
 

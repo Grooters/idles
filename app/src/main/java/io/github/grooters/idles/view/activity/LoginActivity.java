@@ -1,19 +1,25 @@
 package io.github.grooters.idles.view.activity;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import androidx.fragment.app.Fragment;
+import io.github.grooters.idles.Presenter.ILoginP;
+import io.github.grooters.idles.Presenter.imple.LoginP;
 import io.github.grooters.idles.R;
 import io.github.grooters.idles.base.BaseActivity;
 import io.github.grooters.idles.base.BaseFragment;
+import io.github.grooters.idles.view.activity.inter.ILoginActivity;
 import io.github.grooters.idles.view.fragment.LoginFragment;
 
 /**
  * Create by 李林浪 in 2019/6/21
  * Elegant Code...
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements ILoginActivity {
 
     private static final String TAG = "LoginActivity";
+
+    private ILoginP iLoginP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,8 @@ public class LoginActivity extends BaseActivity {
         setFullScreen(true);
 
         super.onCreate(savedInstanceState);
+
+        iLoginP = new LoginP(this);
 
     }
 
@@ -53,4 +61,27 @@ public class LoginActivity extends BaseActivity {
         return R.layout.activity_login;
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        return iLoginP.endActivity(this, keyCode, event);
+
+    }
+
+    @Override
+    public void destroy() {
+
+        finish();
+
+    }
+
+    @Override
+    public void startLading() {
+
+    }
+
+    @Override
+    public void stopLading() {
+
+    }
 }

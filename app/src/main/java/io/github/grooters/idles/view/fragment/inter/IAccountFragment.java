@@ -6,6 +6,12 @@ public interface IAccountFragment extends IBaseView {
 
     void setPasswordEditVisible();
 
-    void showVerificationError();
+    void showVerificationError(String message);
+
+    void showSuccess(String message);
+
+    void showFailure(String message);
+
+    void initVerificationTextView();
 
 }

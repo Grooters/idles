@@ -11,4 +11,6 @@
     <color name="text_password_forget">#090909</color>
     <color name="text_visitor_register">#090909</color>
     <color name="text_back_login">#3C3C3C</color>
+    <color name="text_verification">#090909</color>
+    <color name="text_verification_press">#DCDCDC</color>
 </resources>

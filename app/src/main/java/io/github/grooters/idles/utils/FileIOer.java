@@ -59,8 +59,6 @@ public class FileIOer {
             e.printStackTrace();
         }
 
-        Logger.d(message.toString());
-
         return message.toString();
 
     }

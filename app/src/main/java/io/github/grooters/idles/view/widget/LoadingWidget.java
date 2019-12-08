@@ -17,7 +17,7 @@ public class LoadingWidget extends TextView{
 
     private RelativeSizeSpan sizeSpan;
 
-    private Runnable runable;
+    private Runnable runnable;
 
     private int index;
 
@@ -35,7 +35,7 @@ public class LoadingWidget extends TextView{
 
     private void initAnimator(){
 
-        runable = new Runnable() {
+        runnable = new Runnable() {
             int time = 800;
             @Override
             public void run() {
@@ -67,7 +67,7 @@ public class LoadingWidget extends TextView{
     public void start(){
         b = true;
         setVisibility(VISIBLE);
-        new Thread(runable).start();
+        new Thread(runnable).start();
     }
 
     public void stop(){

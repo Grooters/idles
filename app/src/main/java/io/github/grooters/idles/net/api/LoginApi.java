@@ -26,7 +26,7 @@ public interface LoginApi {
 
     @FormUrlEncoded
     @POST("getVerification")
-    Observable<BaseBean<Verification>> getVerification(@Field("phoneNumber") String phoneNumber);
+    Observable<BaseBean<Verification>> getVerification(@Field("email") String email);
 
     @FormUrlEncoded
     @POST("register")

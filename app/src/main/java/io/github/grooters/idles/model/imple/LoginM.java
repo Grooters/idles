@@ -35,7 +35,7 @@ public class LoginM implements ILoginM {
     }
 
     @Override
-    public void getUserNoToken(String number, String password, final ModelCallBack<GetUserData> callBack) {
+    public void getUserNoToken(final String number, String password, final ModelCallBack<GetUserData> callBack) {
 
         Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getToken(number, password)
                 .subscribeOn(Schedulers.io())

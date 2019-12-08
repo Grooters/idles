@@ -3,6 +3,7 @@ package io.github.grooters.idles.Presenter;
 
 import android.content.Context;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 
 public interface ILoginP {
 
@@ -22,8 +23,10 @@ public interface ILoginP {
 
     boolean getIsRemember();
 
-    void getVerification(String phoneNumber);
+    void getVerification(Context context, String email);
 
     void verify(String code);
+
+    boolean endActivity(Context context, int keyCode, KeyEvent event);
 
 }
