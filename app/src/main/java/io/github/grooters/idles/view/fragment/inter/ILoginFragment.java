@@ -16,11 +16,7 @@ public interface ILoginFragment extends IBaseView {
 
     void hideClearButton();
 
-    void loginFailure(String message);
-
     void loginSuccess();
-
-    void loginFailureAsVisitor();
 
     void loginSuccessAsVisitor();
 

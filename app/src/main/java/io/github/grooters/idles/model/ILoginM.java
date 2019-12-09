@@ -10,12 +10,14 @@ public interface ILoginM {
 
     void getUserNoToken(String number, String password, ModelCallBack<GetUserData> callBack);
 
-    void getUser(String token, ModelCallBack<GetUserData> callBack);
+    void getUserWithToken(String token, ModelCallBack<GetUserData> callBack);
 
     void getToken(ModelCallBack<Token> callBack);
 
     void getVerification(String phoneNumber, ModelCallBack<Verification> callBack);
 
     void setUser(String phoneNumber, String password, ModelCallBack<User> callBack);
+
+    public void getUserWithEmail(String email, String verification, String password, final ModelCallBack<GetUserData> callBack);
 
 }

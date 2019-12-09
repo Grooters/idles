@@ -13,8 +13,6 @@ public interface ILoginP {
 
     TextWatcher getTextWatcher();
 
-    void findPassword();
-
     void login(Context context, String number, String password);
 
     void loginAsVisitor(Context context);
@@ -26,6 +24,8 @@ public interface ILoginP {
     void getVerification(Context context, String email);
 
     void verify(String code);
+
+    void register(Context context, int type, String email, String verification, String password, String passwordSend);
 
     boolean endActivity(Context context, int keyCode, KeyEvent event);
 

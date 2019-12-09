@@ -45,11 +45,11 @@ public class LoadingWidget extends TextView{
                         index = 0;
                         time = 800;
                     }else if( index == 2 ){
-                        time = 600;
+                        time = 800;
                     }else if( index == 4 ){
-                        time = 400;
+                        time = 800;
                     }else if( index == 6 ){
-                        time = 300;
+                        time = 800;
                     }
                     invalidate();
                     try {

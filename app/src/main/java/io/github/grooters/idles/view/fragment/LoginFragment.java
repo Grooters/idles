@@ -37,6 +37,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
     private LoadingWidget loadingText;
 
+    public static final int FIND_PASSWORD_FRAGMENT = 2;
+
+    public static final int REGISTER_ACCOUNT_FRAGMENT = 1;
+
     @Override
     public void initView(View view) {
 
@@ -137,16 +141,15 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
             case R.id.text_forget:
 
-                Logger.d("text_forget");
-
-                iLoginP.findPassword();
+                ((LoginActivity) Objects.requireNonNull(getActivity()))
+                        .replaceFragment( new AccountFragment(FIND_PASSWORD_FRAGMENT), "AccountFragment");
 
                 break;
 
             case R.id.text_register:
 
                 ((LoginActivity) Objects.requireNonNull(getActivity()))
-                        .replaceFragment( new AccountFragment(), "AccountFragment");
+                        .replaceFragment( new AccountFragment(REGISTER_ACCOUNT_FRAGMENT), "AccountFragment");
 
                 break;
 
@@ -172,12 +175,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
         }
     }
 
-    @Override
-    public void loginFailure(String message) {
-
-        Toaster.shortShow(getActivity(), message);
-
-    }
 
     @Override
     public void loginSuccess() {
@@ -188,12 +185,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
     }
 
-    @Override
-    public void loginFailureAsVisitor() {
-
-        Toaster.shortShow(getActivity(), "登录失败");
-
-    }
 
     @Override
     public void loginSuccessAsVisitor() {

@@ -18,8 +18,12 @@ public interface LoginApi {
     Observable<BaseBean<Token>> getToken(@Field("number") String number, @Field("password") String password);
 
     @FormUrlEncoded
-    @POST("getUser")
-    Observable<BaseBean<GetUserData>> getUser(@Field("token") String token);
+    @POST("getUserWithToken")
+    Observable<BaseBean<GetUserData>> getUserWithToken(@Field("token") String token);
+
+    @FormUrlEncoded
+    @POST("getUserWithEmail")
+    Observable<BaseBean<GetUserData>> getUserWithEmail(@Field("email") String email, @Field("verification") String verification, @Field("password")String password);
 
     @GET("getTokenByVisitor")
     Observable<BaseBean<Token>> getTokenByVisitor();

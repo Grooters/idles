@@ -1,11 +1,9 @@
 package io.github.grooters.idles.view.fragment;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.orhanobut.logger.Logger;
-
 import java.util.Objects;
 import io.github.grooters.idles.Presenter.ILoginP;
 import io.github.grooters.idles.Presenter.imple.LoginP;
@@ -21,7 +19,17 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
     private TextView verificationTextView;
 
+    private Button registerButton;
+
     private ILoginP iLoginP;
+
+    private int type;
+
+    AccountFragment(int type){
+
+        this.type = type;
+
+    }
 
     @Override
     public int getLayout() {
@@ -31,7 +39,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void initView(View view) {
 
-        phoneEdit = view.findViewById(R.id.edit_phone);
+        phoneEdit = view.findViewById(R.id.edit_email);
 
         verificationEdit = view.findViewById(R.id.edit_verification);
 
@@ -44,6 +52,8 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         TextView verifyTextView = view.findViewById(R.id.text_verify);
 
         TextView backLoginTextView = view.findViewById(R.id.text_back_login);
+
+        registerButton = view.findViewById(R.id.butt_register);
 
         phoneEdit.setOnClickListener(this);
 
@@ -59,7 +69,16 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
         backLoginTextView.setOnClickListener(this);
 
+        registerButton.setOnClickListener(this);
+
         iLoginP = new LoginP(this);
+
+    }
+
+    @Override
+    public void setRegisterButtonText(String text) {
+
+        registerButton.setText(text);
 
     }
 
@@ -80,7 +99,10 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
                 break;
 
-            case R.id.text_register:
+            case R.id.butt_register:
+
+                iLoginP.register(getActivity(), type, phoneEdit.getText().toString(),
+                        verificationTextView.getText().toString(), passwordEdit.getText().toString(), passwordSecondEdit.getText().toString());
 
                 break;
 
@@ -96,7 +118,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Override
-    public void showSuccess(String message) {
+    public void showVerificationSuccess(String message) {
 
         verificationTextView.setTextColor(getResources().getColor(R.color.text_verification_press,null));
 
@@ -104,17 +126,15 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
     }
 
-    @Override
-    public void showFailure(String message) {
-
-        Toaster.shortShow(getActivity(),message);
-
-    }
+//    @Override
+//    public void showVerificationFailure(String message) {
+//
+//        Toaster.shortShow(getActivity(),message);
+//
+//    }
 
     @Override
     public void initVerificationTextView() {
-
-        Logger.d("initVerificationTextView");
 
         verificationTextView.setTextColor(getResources().getColor(R.color.text_verification,null));
 
@@ -129,12 +149,41 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
         passwordSecondEdit.setVisibility(View.VISIBLE);
 
+        registerButton.setVisibility(View.VISIBLE);
+
     }
 
     @Override
-    public void showVerificationError(String message) {
+    public void setPasswordVisibleGone() {
 
-        Toaster.shortShow(getActivity(),message);
+        passwordEdit.setVisibility(View.GONE);
+
+        passwordSecondEdit.setVisibility(View.VISIBLE);
+
+    }
+
+    //    @Override
+//    public void showVerifyError(String message) {
+//
+//        Toaster.shortShow(getActivity(),message);
+//
+//    }
+
+
+    @Override
+    public void showFailure(String message) {
+
+        Toaster.shortShow(getActivity(), message);
+
+    }
+
+    @Override
+    public void showRegisterSuccess(String message) {
+
+        Toaster.shortShow(getActivity(), message);
+
+        ((LoginActivity) Objects.requireNonNull(getActivity()))
+                .replaceFragment( new LoginFragment(), "LoginFragment");
 
     }
 

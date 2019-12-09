@@ -83,6 +83,14 @@ public class LoginP implements ILoginP {
     @Override
     public void login(final Context context, String number, String password) {
 
+        if(number.equals("") || password.equals("")){
+
+            Toaster.shortShow(context, "账户或密码不能为空");
+
+            return;
+
+        }
+
         iLoginFragment.startLading();
 
         iLoginM.getUserNoToken(number, password, new ModelCallBack<GetUserData>() {
@@ -96,15 +104,15 @@ public class LoginP implements ILoginP {
 
                 switch (code){
                     case ResponseCode.PASS_ERROR:
-                        iLoginFragment.loginFailure("账号或密码错误");
+                        Toaster.shortShow(context, "账户或密码错误");
                         iLoginFragment.stopLading();
                         return;
                     case ResponseCode.ACCOUNT_NON:
-                        iLoginFragment.loginFailure("账户不存在");
+                        Toaster.shortShow(context, "账户不存在");
                         iLoginFragment.stopLading();
                         return;
                     case ResponseCode.UNKNOWN:
-                        iLoginFragment.loginFailure("未知错误，请稍后再试");
+                        Toaster.shortShow(context, "未知错误");
                         iLoginFragment.stopLading();
                         return;
                     case ResponseCode.LOGIN_SUCCESS:
@@ -122,6 +130,8 @@ public class LoginP implements ILoginP {
                         return;
                 }
 
+                iLoginFragment.stopLading();
+
                 Toaster.shortShow(context, "测试过程，需要更改接口响应码");
 
             }
@@ -131,7 +141,7 @@ public class LoginP implements ILoginP {
 
                 iLoginFragment.stopLading();
 
-                iLoginFragment.loginFailure(message);
+                Toaster.shortShow(context, "登录出错");
 
             }
 
@@ -161,7 +171,7 @@ public class LoginP implements ILoginP {
 
                     case ResponseCode.ACCOUNT_NON:
 
-                        iLoginFragment.loginFailureAsVisitor();
+                        Toaster.shortShow(context, "未知错误");
                         return;
                 }
 
@@ -172,7 +182,7 @@ public class LoginP implements ILoginP {
             @Override
             public void failure(String message) {
 
-                iLoginFragment.loginFailureAsVisitor();
+                Toaster.shortShow(context, "登录出错");
 
             }
         });
@@ -254,18 +264,23 @@ public class LoginP implements ILoginP {
 
     }
 
-    @Override
-    public void findPassword() {
-
-    }
 
     // 注册手机账号
     @Override
     public void getVerification(final Context context, String email) {
 
+        if(email.equals("") ){
+
+            iAccountFragment.showFailure("邮箱地址不能为空");
+
+            return;
+
+        }
+
+
         if(i != 60){
 
-            iAccountFragment.showVerificationError("需要等待"+i+"秒后才能再次获得验证码");
+            iAccountFragment.showFailure("需要等待"+i+"秒后才能再次获得验证码");
 
             return;
 
@@ -285,14 +300,14 @@ public class LoginP implements ILoginP {
 
                         verification = verifications.getData();
 
-                        iAccountFragment.showSuccess(verifications.getDesc());
+                        iAccountFragment.showVerificationSuccess(verifications.getDesc());
 
                         return;
 
                     case ResponseCode.GET_VERIFICATION_FAILURE:
 
                         // 业务逻辑问题
-                        iAccountFragment.showFailure("验证码获取失败");
+                        iAccountFragment.showFailure(verifications.getDesc());
 
                         return;
 
@@ -307,7 +322,7 @@ public class LoginP implements ILoginP {
                 verification = null;
 
                 // 接口调用问题
-                iAccountFragment.showFailure("验证码获取失败");
+                iAccountFragment.showFailure("验证码获取出错");
 
             }
         });
@@ -323,8 +338,84 @@ public class LoginP implements ILoginP {
 
         }else{
 
-            iAccountFragment.showVerificationError("验证失败");
+            iAccountFragment.showFailure("验证失败");
 
+        }
+
+    }
+
+    @Override
+    public void register(final Context context, int type, String email, String verification, String password, String passwordSend) {
+
+        if(!password.equals(passwordSend)){
+
+            iAccountFragment.showFailure("两次密码输入不一致");
+
+        }
+
+        if(type == LoginFragment.REGISTER_ACCOUNT_FRAGMENT) {
+
+            iAccountFragment.setRegisterButtonText("注册");
+
+            // 注册账号
+            iLoginM.setUser(email, password, new ModelCallBack<User>() {
+                @Override
+                public void success(BaseBean<User> data) {
+
+                    switch (data.getCode()) {
+
+                        case ResponseCode.REGISTER_SUCCESS:
+
+                            iAccountFragment.showRegisterSuccess(data.getDesc());
+
+                            return;
+
+                        case ResponseCode.REGISTER_FAILURE:
+
+                            iAccountFragment.setPasswordVisibleGone();
+
+                            iAccountFragment.showFailure(data.getDesc());
+
+                            return;
+
+                    }
+
+                    iAccountFragment.showFailure("处于测试阶段，需要更改响应码");
+
+                }
+
+                @Override
+                public void failure(String message) {
+
+                    iAccountFragment.setPasswordVisibleGone();
+
+                    iAccountFragment.showFailure("账号注册出错");
+
+                }
+            });
+
+        }
+        else if (type == LoginFragment.FIND_PASSWORD_FRAGMENT){
+
+            iAccountFragment.setRegisterButtonText("找回");
+
+
+        // 找回密码
+            iLoginM.getUserWithEmail(email, verification, password, new ModelCallBack<GetUserData>() {
+                @Override
+                public void success(BaseBean<GetUserData> data) {
+
+                    Toaster.shortShow(context, "新密码设置成功");
+
+                }
+
+                @Override
+                public void failure(String message) {
+
+                    Toaster.shortShow(context, "密码找回出错");
+
+                }
+            });
         }
 
     }

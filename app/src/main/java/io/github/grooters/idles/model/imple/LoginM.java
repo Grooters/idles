@@ -45,7 +45,7 @@ public class LoginM implements ILoginM {
                     @Override
                     public ObservableSource<BaseBean<GetUserData>> apply(BaseBean<Token> tokens) {
                         Logger.d(tokens.getData().getToken());
-                        return Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUser(tokens.getData().getToken());
+                        return Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUserWithToken(tokens.getData().getToken());
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -127,9 +127,9 @@ public class LoginM implements ILoginM {
     }
 
     @Override
-    public void getUser(String token, final ModelCallBack<GetUserData> callBack) {
+    public void getUserWithToken(String token, final ModelCallBack<GetUserData> callBack) {
 
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUser(token)
+        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUserWithToken(token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext(new Consumer<BaseBean<GetUserData>>() {
@@ -150,6 +150,33 @@ public class LoginM implements ILoginM {
                 @Override
                 public void onComplete() { }
             });
+
+    }
+
+    @Override
+    public void getUserWithEmail(String email, String verification, String password, final ModelCallBack<GetUserData> callBack) {
+
+        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUserWithEmail(email, verification, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<BaseBean<GetUserData>>() {
+                    @Override
+                    public void accept(BaseBean<GetUserData> user) {
+                        callBack.success(user);
+                    }
+                })
+                .subscribe(new Observer<BaseBean<GetUserData>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) { }
+                    @Override
+                    public void onNext(BaseBean<GetUserData> user) { }
+                    @Override
+                    public void onError(Throwable e) {
+                        callBack.failure(e.getMessage());
+                    }
+                    @Override
+                    public void onComplete() { }
+                });
 
     }
 
