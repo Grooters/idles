@@ -10,11 +10,9 @@ import android.view.KeyEvent;
 import androidx.annotation.NonNull;
 import com.orhanobut.logger.Logger;
 import io.github.grooters.idles.Presenter.ILoginP;
-import io.github.grooters.idles.base.BaseBean;
 import io.github.grooters.idles.bean.Token;
 import io.github.grooters.idles.bean.User;
 import io.github.grooters.idles.bean.Verification;
-import io.github.grooters.idles.bean.data.GetUserData;
 import io.github.grooters.idles.model.ILoginM;
 import io.github.grooters.idles.model.imple.LoginM;
 import io.github.grooters.idles.net.ModelCallBack;
@@ -93,16 +91,14 @@ public class LoginP implements ILoginP {
 
         iLoginFragment.startLading();
 
-        iLoginM.getUserNoToken(number, password, new ModelCallBack<GetUserData>() {
+        iLoginM.getUser(number, password, new ModelCallBack<User>() {
 
             @Override
-            public void success(BaseBean<GetUserData> data) {
+            public void success(User data) {
 
-                Logger.d(data.getData().getUser().getName());
+                Logger.d(data.getCode());
 
-                int code = data.getCode();
-
-                switch (code){
+                switch (data.getCode()){
                     case ResponseCode.PASS_ERROR:
                         Toaster.shortShow(context, "账户或密码错误");
                         iLoginFragment.stopLading();
@@ -116,7 +112,7 @@ public class LoginP implements ILoginP {
                         iLoginFragment.stopLading();
                         return;
                     case ResponseCode.LOGIN_SUCCESS:
-                        user = data.getData().getUser();
+                        user = data;
 
                         if( isRememberAccount)
 
@@ -141,22 +137,23 @@ public class LoginP implements ILoginP {
 
                 iLoginFragment.stopLading();
 
-                Toaster.shortShow(context, "登录出错");
+                Toaster.shortShow(context, message);
 
             }
 
         });
+
 
     }
 
     @Override
     public void loginAsVisitor(final Context context) {
         // 拿到临时访问令牌
-        iLoginM.getToken(new ModelCallBack<Token>() {
+        iLoginM.getTokenAsVisitor(new ModelCallBack<Token>() {
             @Override
-            public void success(BaseBean<Token> tokens) {
+            public void success(Token tokens) {
 
-                String token = tokens.getData().getToken();
+                String token = tokens.getToken();
 
                 int code = tokens.getCode();
 
@@ -265,7 +262,7 @@ public class LoginP implements ILoginP {
     }
 
 
-    // 注册手机账号
+    // 注册账号获取验证码
     @Override
     public void getVerification(final Context context, String email) {
 
@@ -288,9 +285,9 @@ public class LoginP implements ILoginP {
 
         iLoginM.getVerification(email, new ModelCallBack<Verification>() {
             @Override
-            public void success(BaseBean<Verification> verifications) {
+            public void success(Verification data) {
 
-                int code = verifications.getCode();
+                int code = data.getCode();
 
                 switch (code){
 
@@ -298,16 +295,16 @@ public class LoginP implements ILoginP {
 
                         new VerificationThread().start();
 
-                        verification = verifications.getData();
+                        verification = data;
 
-                        iAccountFragment.showVerificationSuccess(verifications.getDesc());
+                        iAccountFragment.showVerificationSuccess(data.getDesc());
 
                         return;
 
                     case ResponseCode.GET_VERIFICATION_FAILURE:
 
                         // 业务逻辑问题
-                        iAccountFragment.showFailure(verifications.getDesc());
+                        iAccountFragment.showFailure(data.getDesc());
 
                         return;
 
@@ -345,7 +342,7 @@ public class LoginP implements ILoginP {
     }
 
     @Override
-    public void register(final Context context, int type, String email, String verification, String password, String passwordSend) {
+    public void register(final Context context, int type, String email, String password, String passwordSend) {
 
         if(!password.equals(passwordSend)){
 
@@ -360,7 +357,7 @@ public class LoginP implements ILoginP {
             // 注册账号
             iLoginM.setUser(email, password, new ModelCallBack<User>() {
                 @Override
-                public void success(BaseBean<User> data) {
+                public void success(User data) {
 
                     switch (data.getCode()) {
 
@@ -400,10 +397,10 @@ public class LoginP implements ILoginP {
             iAccountFragment.setRegisterButtonText("找回");
 
 
-        // 找回密码
-            iLoginM.getUserWithEmail(email, verification, password, new ModelCallBack<GetUserData>() {
+            // 找回密码
+            iLoginM.setUser(email, password, new ModelCallBack<User>() {
                 @Override
-                public void success(BaseBean<GetUserData> data) {
+                public void success(User data) {
 
                     Toaster.shortShow(context, "新密码设置成功");
 

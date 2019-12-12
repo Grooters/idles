@@ -2,23 +2,19 @@ package io.github.grooters.idles.model.imple;
 
 import com.orhanobut.logger.Logger;
 import io.github.grooters.idles.Presenter.ILoginP;
-import io.github.grooters.idles.base.BaseBean;
 import io.github.grooters.idles.bean.Token;
 import io.github.grooters.idles.bean.User;
 import io.github.grooters.idles.bean.Verification;
-import io.github.grooters.idles.bean.data.GetUserData;
 import io.github.grooters.idles.model.ILoginM;
 import io.github.grooters.idles.net.ModelCallBack;
 import io.github.grooters.idles.net.Retrofiter;
 import io.github.grooters.idles.net.api.LoginApi;
 import io.github.grooters.idles.net.ServerAddress;
 import io.github.grooters.idles.view.fragment.inter.ILoginFragment;
-import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class LoginM implements ILoginM {
@@ -35,59 +31,47 @@ public class LoginM implements ILoginM {
     }
 
     @Override
-    public void getUserNoToken(final String number, String password, final ModelCallBack<GetUserData> callBack) {
-
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getToken(number, password)
-                .subscribeOn(Schedulers.io())
-                // 这里要用io线程来实现第二个接口的请求访问
-                .observeOn(Schedulers.io())
-                .flatMap(new Function<BaseBean<Token>, ObservableSource<BaseBean<GetUserData>>>() {
-                    @Override
-                    public ObservableSource<BaseBean<GetUserData>> apply(BaseBean<Token> tokens) {
-                        Logger.d(tokens.getData().getToken());
-                        return Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUserWithToken(tokens.getData().getToken());
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<BaseBean<GetUserData>> (){
-                    @Override
-                    public void accept(BaseBean<GetUserData> users) {
-                        Logger.d(users.getDesc());
-                        callBack.success(users);
-                    }
-                })
-                .subscribe(new Observer<BaseBean<GetUserData>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) { }
-                    @Override
-                    public void onNext(BaseBean<GetUserData> user) { }
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.d(e.getMessage());
-                        callBack.failure(e.getMessage());
-                    }
-                    @Override
-                    public void onComplete() { }
-                });
+    public void getUser(String number, String password, final ModelCallBack<User> callBack) {
+        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUser(number, password)
+             .subscribeOn(Schedulers.io())
+             .observeOn(AndroidSchedulers.mainThread())
+             .doOnNext(new Consumer<User>() {
+                 @Override
+                 public void accept(User user) {
+                     callBack.success(user);
+                 }
+             }).subscribe(new Observer<User>() {
+            @Override
+            public void onSubscribe(Disposable d) { }
+            @Override
+            public void onNext(User user) { }
+            @Override
+            public void onError(Throwable e) {
+                callBack.failure("请求错误");
+            }
+            @Override
+            public void onComplete() { }
+        });
     }
 
-    @Override
-    public void getToken(final ModelCallBack<Token> callBack) {
 
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getTokenByVisitor()
+    @Override
+    public void getTokenAsVisitor(final ModelCallBack<Token> callBack) {
+
+        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getTokenAsVisitor()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<BaseBean<Token>>() {
+                .doOnNext(new Consumer<Token>() {
                     @Override
-                    public void accept(BaseBean<Token> tokens) {
-                        callBack.success(tokens);
+                    public void accept(Token token) {
+                        callBack.success(token);
                     }
                 })
-                .subscribe(new Observer<BaseBean<Token>>() {
+                .subscribe(new Observer<Token>() {
                     @Override
                     public void onSubscribe(Disposable d) { }
                     @Override
-                    public void onNext(BaseBean<Token> tokens) { }
+                    public void onNext(Token token) { }
                     @Override
                     public void onError(Throwable e) {
                         Logger.d(e.getMessage());
@@ -105,17 +89,17 @@ public class LoginM implements ILoginM {
         Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getVerification(phoneNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<BaseBean<Verification>>() {
+                .doOnNext(new Consumer<Verification>() {
                     @Override
-                    public void accept(BaseBean<Verification> verifications){
-                        callBack.success(verifications);
+                    public void accept(Verification verification){
+                        callBack.success(verification);
                     }
                 })
-                .subscribe(new Observer<BaseBean<Verification>>() {
+                .subscribe(new Observer<Verification>() {
                     @Override
                     public void onSubscribe(Disposable d) { }
                     @Override
-                    public void onNext(BaseBean<Verification> verifications) { }
+                    public void onNext(Verification verifications) { }
                     @Override
                     public void onError(Throwable e) {
                         callBack.failure(e.getMessage());
@@ -127,76 +111,22 @@ public class LoginM implements ILoginM {
     }
 
     @Override
-    public void getUserWithToken(String token, final ModelCallBack<GetUserData> callBack) {
+    public void setUser(String email, String password, final ModelCallBack<User> callBack) {
 
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUserWithToken(token)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext(new Consumer<BaseBean<GetUserData>>() {
-                @Override
-                public void accept(BaseBean<GetUserData> user) {
-                    callBack.success(user);
-                }
-            })
-            .subscribe(new Observer<BaseBean<GetUserData>>() {
-                @Override
-                public void onSubscribe(Disposable d) { }
-                @Override
-                public void onNext(BaseBean<GetUserData> user) { }
-                @Override
-                public void onError(Throwable e) {
-                    callBack.failure(e.getMessage());
-                }
-                @Override
-                public void onComplete() { }
-            });
-
-    }
-
-    @Override
-    public void getUserWithEmail(String email, String verification, String password, final ModelCallBack<GetUserData> callBack) {
-
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUserWithEmail(email, verification, password)
+        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).setUser(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<BaseBean<GetUserData>>() {
+                .doOnNext(new Consumer<User>() {
                     @Override
-                    public void accept(BaseBean<GetUserData> user) {
-                        callBack.success(user);
-                    }
-                })
-                .subscribe(new Observer<BaseBean<GetUserData>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) { }
-                    @Override
-                    public void onNext(BaseBean<GetUserData> user) { }
-                    @Override
-                    public void onError(Throwable e) {
-                        callBack.failure(e.getMessage());
-                    }
-                    @Override
-                    public void onComplete() { }
-                });
-
-    }
-
-    @Override
-    public void setUser(String phoneNumber, String password, final ModelCallBack<User> callBack) {
-
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).register(phoneNumber, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<BaseBean<User>>() {
-                    @Override
-                    public void accept(BaseBean<User> users) {
+                    public void accept(User users) {
                         callBack.success(users);
                     }
                 })
-                .subscribe(new Observer<BaseBean<User>>() {
+                .subscribe(new Observer<User>() {
                     @Override
                     public void onSubscribe(Disposable d) { }
                     @Override
-                    public void onNext(BaseBean<User> users) { }
+                    public void onNext(User users) { }
                     @Override
                     public void onError(Throwable e) {
                         callBack.failure(e.getMessage());

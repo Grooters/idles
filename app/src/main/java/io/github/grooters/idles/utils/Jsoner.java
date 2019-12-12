@@ -10,7 +10,7 @@ public class Jsoner {
 
     public static void main(String...args){
 
-        User user = new User("12","12","12","12","12","12","12","12","12");
+        User user = new User("12","12","12","12","12","12","12","12","12","ded","ede",1);
 
         Gson gson = new Gson();
 

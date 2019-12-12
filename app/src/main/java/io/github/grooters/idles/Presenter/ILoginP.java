@@ -25,7 +25,7 @@ public interface ILoginP {
 
     void verify(String code);
 
-    void register(Context context, int type, String email, String verification, String password, String passwordSend);
+    void register(Context context, int type, String email, String password, String passwordSend);
 
     boolean endActivity(Context context, int keyCode, KeyEvent event);
 

@@ -8,30 +8,37 @@ import com.google.gson.Gson;
  */
 public class User{
 
-    private String token, name, signature, nickName, gender, number, college, avatarUrl, password;
+    private String name, signature, gender, number, college, avatarUrl, password, email, phone, token;
 
-    public User(String name, String signature, String nickName, String gender,
-                String number, String college, String avatarUrl, String password, String token) {
+    private int code;
+
+    private String desc;
+
+    // number为key
+    public User(String name, String signature, String gender, String number,String token,
+                String college, String avatarUrl, String password, String email, String phone, int code) {
         this.name = name;
         this.signature = signature;
-        this.nickName = nickName;
         this.gender = gender;
         this.number = number;
         this.college = college;
         this.avatarUrl = avatarUrl;
         this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.code = code;
         this.token = token;
     }
 
-//    public static void main(String...args){
-//
-//        Gson gson = new Gson();
-//
-//        User user = new User("1","2","1","2","1","2","1","2","1");
-//
-//        System.out.println(gson.toJson(user));
-//
-//    }
+    public static void main(String...args){
+
+        Gson gson = new Gson();
+
+        User user = new User("1","2","1","2","1","2","212","1","2","3",1);
+
+        System.out.println(gson.toJson(user));
+
+    }
 
     public String getToken() {
         return token;
@@ -40,6 +47,39 @@ public class User{
     public void setToken(String token) {
         this.token = token;
     }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 
     public String getPassword() {
         return password;
@@ -63,14 +103,6 @@ public class User{
 
     public void setSignature(String signature) {
         this.signature = signature;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
     }
 
     public String getGender() {

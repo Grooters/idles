@@ -102,7 +102,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
             case R.id.butt_register:
 
                 iLoginP.register(getActivity(), type, phoneEdit.getText().toString(),
-                        verificationTextView.getText().toString(), passwordEdit.getText().toString(), passwordSecondEdit.getText().toString());
+                       passwordEdit.getText().toString(), passwordSecondEdit.getText().toString());
 
                 break;
 
