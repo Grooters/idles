@@ -13,4 +13,5 @@
     <color name="text_back_login">#3C3C3C</color>
     <color name="text_verification">#090909</color>
     <color name="text_verification_press">#DCDCDC</color>
+    <color name="layout_config">#CACACA</color>
 </resources>

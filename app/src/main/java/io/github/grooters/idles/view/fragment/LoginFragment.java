@@ -16,6 +16,7 @@ import io.github.grooters.idles.utils.Intenter;
 import io.github.grooters.idles.utils.Toaster;
 import io.github.grooters.idles.view.activity.LoginActivity;
 import io.github.grooters.idles.view.activity.MainActivity;
+import io.github.grooters.idles.view.dialog.ConfigDialog;
 import io.github.grooters.idles.view.fragment.inter.ILoginFragment;
 import io.github.grooters.idles.view.widget.LoadingWidget;
 
@@ -40,6 +41,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
     public static final int REGISTER_ACCOUNT_FRAGMENT = 1;
 
+    private ConfigDialog configDialog;
+
     @Override
     public void initView(View view) {
 
@@ -61,6 +64,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
         TextView registerText = view.findViewById(R.id.text_register);
 
         TextView visitorText = view.findViewById(R.id.text_visitor);
+
+        ImageView loginImage = view.findViewById(R.id.img_login);
 
         clearImage = view.findViewById(R.id.img_clear);
 
@@ -86,7 +91,11 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
         visitorText.setOnClickListener(this);
 
+        loginImage.setOnClickListener(this);
+
         iLoginP.judgeAccount(Objects.requireNonNull(getActivity()).getApplicationContext());
+
+        iLoginP.initServerUrl(getActivity().getApplicationContext());
     }
 
     @Override
@@ -171,9 +180,25 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
 
                 break;
 
+            case R.id.img_login:
+
+                iLoginP.config();
+
+                break;
+
         }
     }
 
+    @Override
+    public void showConfigDialog() {
+
+        if(configDialog == null)
+
+            configDialog = new ConfigDialog();
+
+        configDialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "configDialog");
+
+    }
 
     @Override
     public void loginSuccess() {

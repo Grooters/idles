@@ -10,5 +10,8 @@ public class ResponseCode {
     public final static int VERIFY_FAILURE = -4;
     public final static int REGISTER_SUCCESS = 5;
     public final static int REGISTER_FAILURE = -5;
+    public final static int VERIFICATION_ERROR = -6;
+    public final static int GET_TOKEN_SUCCESS = 7;
+    public final static int GET_TOKEN_FAILURE = -7;
     public final static int UNKNOWN = 0;
 }

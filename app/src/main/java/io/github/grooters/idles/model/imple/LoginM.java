@@ -32,7 +32,7 @@ public class LoginM implements ILoginM {
 
     @Override
     public void getUser(String number, String password, final ModelCallBack<User> callBack) {
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getUser(number, password)
+        Retrofiter.getApi(LoginApi.class, ServerAddress.localUrl).getUser(number, password)
              .subscribeOn(Schedulers.io())
              .observeOn(AndroidSchedulers.mainThread())
              .doOnNext(new Consumer<User>() {
@@ -58,7 +58,7 @@ public class LoginM implements ILoginM {
     @Override
     public void getTokenAsVisitor(final ModelCallBack<Token> callBack) {
 
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getTokenAsVisitor()
+        Retrofiter.getApi(LoginApi.class, ServerAddress.localUrl).getTokenAsVisitor()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Consumer<Token>() {
@@ -86,7 +86,7 @@ public class LoginM implements ILoginM {
     @Override
     public void getVerification(String phoneNumber, final ModelCallBack<Verification> callBack) {
 
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).getVerification(phoneNumber)
+        Retrofiter.getApi(LoginApi.class, ServerAddress.localUrl).getVerification(phoneNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Consumer<Verification>() {
@@ -113,7 +113,7 @@ public class LoginM implements ILoginM {
     @Override
     public void setUser(String email, String password, final ModelCallBack<User> callBack) {
 
-        Retrofiter.getApi(LoginApi.class, ServerAddress.TEST_URL).setUser(email, password)
+        Retrofiter.getApi(LoginApi.class, ServerAddress.localUrl).setUser(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Consumer<User>() {

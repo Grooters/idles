@@ -15,4 +15,9 @@
     <string name="text_verify">验证</string>
     <string name="text_back_login">已经拥有账号？</string>
     <string name="edit_verification_type">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="edit_url_type">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.</string>
+    <string name="text_local_url">本地服务器地址</string>
+    <string name="text_net_url">网络服务器地址</string>
+    <string name="edit_authorize_change_url">授权修改码</string>
+    <string name="butt_config">设置</string>
 </resources>

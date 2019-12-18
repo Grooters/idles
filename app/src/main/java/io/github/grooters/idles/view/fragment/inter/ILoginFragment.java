@@ -22,4 +22,6 @@ public interface ILoginFragment extends IBaseView {
 
     void initAccount(String number, String password);
 
+    void showConfigDialog();
+
 }

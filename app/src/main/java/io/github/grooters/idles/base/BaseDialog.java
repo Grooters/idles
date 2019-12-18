@@ -1,19 +1,20 @@
 package io.github.grooters.idles.base;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 
-/**
- * Create by 李林浪 in 2019/6/12
- * Elegant Code...
- */
-public abstract class BaseFragment extends Fragment {
+import java.util.Objects;
+
+public abstract class BaseDialog extends DialogFragment {
 
     private static final String TAG = "BaseFragment";
 
@@ -28,6 +29,13 @@ public abstract class BaseFragment extends Fragment {
         initView(layout);
 
         return layout;
+
+    }
+
+    public void setTransaction(){
+
+        Objects.requireNonNull(Objects.requireNonNull(getDialog()).getWindow())
+                .setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
     }
 

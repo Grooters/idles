@@ -4,6 +4,8 @@ public class ServerAddress {
 
     public static final String TEST_URL = "https://www.fastmock.site/mock/68b22df456f9ddd135b2f8ea7462e0ee/idles/";
 
-    public static final String BASE_URL = "";
+    public static String localUrl = "";
+
+    public static String netLocal = "";
 
 }

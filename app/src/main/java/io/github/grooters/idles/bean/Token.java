@@ -2,9 +2,9 @@ package io.github.grooters.idles.bean;
 
 public class Token {
 
-    private int code;
+    private int code, id;
 
-    private String desc;
+    private String message;
 
     private String token;
 
@@ -16,6 +16,14 @@ public class Token {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCode() {
@@ -34,11 +42,11 @@ public class Token {
         this.number = number;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getMessage() {
+        return message;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

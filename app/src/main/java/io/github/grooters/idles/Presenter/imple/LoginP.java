@@ -17,6 +17,7 @@ import io.github.grooters.idles.model.ILoginM;
 import io.github.grooters.idles.model.imple.LoginM;
 import io.github.grooters.idles.net.ModelCallBack;
 import io.github.grooters.idles.net.ResponseCode;
+import io.github.grooters.idles.net.ServerAddress;
 import io.github.grooters.idles.utils.Encrypter;
 import io.github.grooters.idles.utils.FileIOer;
 import io.github.grooters.idles.utils.Jsoner;
@@ -50,9 +51,11 @@ public class LoginP implements ILoginP {
 
     private User user;
 
-    private int i = 60;
+    private int backCount = 0;
 
-    private int j = 2;
+    private int configCount = 0;
+
+    private int verifyTime = 0;
 
     public LoginP(LoginFragment loginFragment){
 
@@ -158,7 +161,7 @@ public class LoginP implements ILoginP {
                 int code = tokens.getCode();
 
                 switch (code){
-                    case ResponseCode.LOGIN_SUCCESS:
+                    case ResponseCode.GET_TOKEN_SUCCESS:
 
                         iLoginFragment.loginSuccessAsVisitor();
 
@@ -166,9 +169,9 @@ public class LoginP implements ILoginP {
 
                         return;
 
-                    case ResponseCode.ACCOUNT_NON:
+                    case ResponseCode.GET_TOKEN_FAILURE:
 
-                        Toaster.shortShow(context, "未知错误");
+                        Toaster.shortShow(context, "令牌获取失败");
                         return;
                 }
 
@@ -247,6 +250,38 @@ public class LoginP implements ILoginP {
     }
 
     @Override
+    public void initServerUrl(Context context) {
+
+        if(!FileIOer.isExit(context, ConfigP.SERVER_URL)){
+
+            return;
+        }
+
+        String serverUrl = Encrypter.fromBase64(FileIOer.readString(context, ConfigP.SERVER_URL));
+
+        Logger.d(serverUrl);
+
+        String[] url = serverUrl.split("\\|");
+
+        if(url.length == 2){
+
+            ServerAddress.localUrl = serverUrl.split("\\|")[0].split("-")[1];
+
+            ServerAddress.netLocal = serverUrl.split("\\|")[1].split("-")[1];
+
+        }else{
+
+            Logger.d(serverUrl.split("\\|")[0]);
+
+            ServerAddress.localUrl = serverUrl.split("\\|")[0].split("-")[1];
+
+        }
+
+        Logger.d(ServerAddress.localUrl + ":" + ServerAddress.netLocal);
+
+    }
+
+    @Override
     public boolean getIsRemember() {
 
         return isRememberAccount;
@@ -275,9 +310,9 @@ public class LoginP implements ILoginP {
         }
 
 
-        if(i != 60){
+        if(verifyTime != 0){
 
-            iAccountFragment.showFailure("需要等待"+i+"秒后才能再次获得验证码");
+            iAccountFragment.showFailure("需要等待"+verifyTime+"秒后才能再次获得验证码");
 
             return;
 
@@ -297,14 +332,14 @@ public class LoginP implements ILoginP {
 
                         verification = data;
 
-                        iAccountFragment.showVerificationSuccess(data.getDesc());
+                        iAccountFragment.showVerificationSuccess(data.getMessage());
 
                         return;
 
                     case ResponseCode.GET_VERIFICATION_FAILURE:
 
                         // 业务逻辑问题
-                        iAccountFragment.showFailure(data.getDesc());
+                        iAccountFragment.showFailure(data.getMessage());
 
                         return;
 
@@ -363,7 +398,7 @@ public class LoginP implements ILoginP {
 
                         case ResponseCode.REGISTER_SUCCESS:
 
-                            iAccountFragment.showRegisterSuccess(data.getDesc());
+                            iAccountFragment.showRegisterSuccess(data.getMessage());
 
                             return;
 
@@ -371,7 +406,7 @@ public class LoginP implements ILoginP {
 
                             iAccountFragment.setPasswordVisibleGone();
 
-                            iAccountFragment.showFailure(data.getDesc());
+                            iAccountFragment.showFailure(data.getMessage());
 
                             return;
 
@@ -420,15 +455,15 @@ public class LoginP implements ILoginP {
     @Override
     public boolean endActivity(Context context, int keyCode, KeyEvent event) {
 
-        Logger.d(j);
+        Logger.d(++backCount);
 
         new EndThread().start();
 
-        if(keyCode == KeyEvent.KEYCODE_BACK && j != 1){
+        if(keyCode == KeyEvent.KEYCODE_BACK && backCount == 1){
 
             Toaster.shortShow(context, "再按一次退出程序");
 
-            --j;
+            ++backCount;
 
         }else if(keyCode == KeyEvent.KEYCODE_BACK){
 
@@ -440,6 +475,23 @@ public class LoginP implements ILoginP {
 
     }
 
+    @Override
+    public void config() {
+
+        new ConfigThread().start();
+
+        ++configCount;
+
+        if(configCount == 5){
+
+            iLoginFragment.showConfigDialog();
+
+            configCount = 0;
+
+        }
+
+    }
+
     // 倒计时再次获取验证码
     class VerificationThread extends Thread{
 
@@ -448,7 +500,9 @@ public class LoginP implements ILoginP {
 
             super.run();
 
-            while(--i >= 0){
+            verifyTime = 60;
+
+            while(verifyTime-- > 0){
 
                 try {
                     Thread.sleep(1000);
@@ -468,22 +522,20 @@ public class LoginP implements ILoginP {
 
             handleUi.sendMessage(message);
 
-            i = 60;
-
         }
     }
 
     // 倒计时按两次返回退出程序
     class EndThread extends Thread {
 
-        int i = 3;
+        int time = 0;
 
         @Override
         public void run() {
 
             super.run();
 
-            while(--i >= 0){
+            while(time++ < 2){
 
                 try {
                     Thread.sleep(1000);
@@ -495,7 +547,33 @@ public class LoginP implements ILoginP {
 
             }
 
-            j = 2;
+            backCount = 0;
+
+        }
+    }
+
+    class ConfigThread extends Thread {
+
+        int time = 0;
+
+        @Override
+        public void run() {
+
+            super.run();
+
+            while(time++ < 2){
+
+                try {
+                    Thread.sleep(1000);
+
+                } catch (InterruptedException e) {
+
+                    e.printStackTrace();
+                }
+
+            }
+
+            configCount = 0;
 
         }
     }

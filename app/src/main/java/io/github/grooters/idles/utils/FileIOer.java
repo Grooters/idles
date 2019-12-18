@@ -77,4 +77,12 @@ public class FileIOer {
 
     }
 
+    public static boolean isExit(Context context, String fileName){
+
+        File file = new File(context.getFilesDir().getPath() + "/" +fileName);
+
+        return file.exists();
+
+    }
+
 }

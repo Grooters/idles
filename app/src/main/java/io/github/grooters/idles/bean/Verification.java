@@ -2,11 +2,21 @@ package io.github.grooters.idles.bean;
 
 public class Verification {
 
-    private int code;
+    private int code, id;
 
-    private String desc;
+    private String message;
 
     private String verification;
+
+    private String email;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getVerification() {
         return verification;
@@ -24,11 +34,19 @@ public class Verification {
         this.code = code;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getMessage() {
+        return message;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

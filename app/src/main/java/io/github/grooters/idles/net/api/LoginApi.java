@@ -15,7 +15,7 @@ public interface LoginApi {
     @POST("getUser")
     Observable<User> getUser(@Field("number") String number, @Field("password") String password);
 
-    @GET("getTokenByVisitor")
+    @GET("getTokenAsVisitor")
     Observable<Token> getTokenAsVisitor();
 
     @FormUrlEncoded

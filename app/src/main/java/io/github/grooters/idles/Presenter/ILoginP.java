@@ -29,4 +29,8 @@ public interface ILoginP {
 
     boolean endActivity(Context context, int keyCode, KeyEvent event);
 
+    void config();
+
+    void initServerUrl(Context context);
+
 }

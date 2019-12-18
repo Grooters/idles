@@ -8,36 +8,18 @@ import com.google.gson.Gson;
  */
 public class User{
 
-    private String name, signature, gender, number, college, avatarUrl, password, email, phone, token;
+    private String name, gender, number, avatarUrl, password, email, phone, token;
 
-    private int code;
+    private int code, id;
 
-    private String desc;
+    private String message;
 
-    // number为key
-    public User(String name, String signature, String gender, String number,String token,
-                String college, String avatarUrl, String password, String email, String phone, int code) {
-        this.name = name;
-        this.signature = signature;
-        this.gender = gender;
-        this.number = number;
-        this.college = college;
-        this.avatarUrl = avatarUrl;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-        this.code = code;
-        this.token = token;
+    public int getId() {
+        return id;
     }
 
-    public static void main(String...args){
-
-        Gson gson = new Gson();
-
-        User user = new User("1","2","1","2","1","2","212","1","2","3",1);
-
-        System.out.println(gson.toJson(user));
-
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getToken() {
@@ -56,12 +38,12 @@ public class User{
         this.code = code;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getMessage() {
+        return message;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getPhone() {
@@ -97,14 +79,6 @@ public class User{
         this.name = name;
     }
 
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
     public String getGender() {
         return gender;
     }
@@ -119,14 +93,6 @@ public class User{
 
     public void setNumber(String number) {
         this.number = number;
-    }
-
-    public String getCollege() {
-        return college;
-    }
-
-    public void setCollege(String college) {
-        this.college = college;
     }
 
     public String getAvatarUrl() {
